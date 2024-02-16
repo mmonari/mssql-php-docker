@@ -16,9 +16,7 @@ In the Dockerfile don't forget to change the timezone by setting the environment
 
     ENV TZ=America/Sao_Paulo
 
-In this current docker-compose.yml, also change/add services as you wish. Default extra containers loaded are:
-
-    redis and mailpit
+In this current docker-compose.yml, also change/add services as you wish. Default extra containers loaded are redis and mailpit.
 
 Personal suggestion: add a MSSQL as a container since you are at it as well :-D.
 
