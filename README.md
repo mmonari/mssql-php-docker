@@ -8,10 +8,6 @@ Just add the Docker related files in this repository at the root of your project
 	    docker build --no-cache
       ./vendor/bin/sail up
 
-In this container I've  included:
- 1. Composer
- 2. Node.js
-
 In the Dockerfile don't forget to change the timezone by setting the environment variable TZ to the desired timezone, for example:
 
     ENV TZ=America/Sao_Paulo
