@@ -1,28 +1,94 @@
-# Laravel + MS SQL Docker
-### FOR DEVELOPMENT ENVIRONMENTS ONLY
+# Laravel + MS SQL Docker Setup  
+**FOR DEVELOPMENT ENVIRONMENTS ONLY**
 
-Yes, you read it right: this is just intended to be used for Laravel apps development that require the php / mssql drivers to access a MS SQL Server instance. Please, **don't use it in production**. 
+This repository provides a Docker setup for developing Laravel applications that require PHP/MS SQL drivers to access a Microsoft SQL Server instance. Please note, this configuration is intended strictly for development purposes and **should not** be used in production environments.
 
-This is to be used to quickly setup a development environment with Laravel and MS SQL Server.
+## Overview
 
-Just add the Docker related files in this repository at the root a Laravel (already sail based) project, then build the image, and *sail it up* as usual ;-) 
-Prior to building, if you wish, make changes like the timezone by setting the environment:
+This setup allows you to quickly spin up a development environment for Laravel applications with MS SQL Server and PHP 8.3 support. It builds upon a Laravel Sail-based project and includes additional containers to support services such as Redis, Mailpit, and MS SQL Server 2022.
 
-    ENV TZ=America/Sao_Paulo
+## Prerequisites
 
-Or change the `docker-compose.yml` file to update, remove, add service containers as you wish. 
-When ready, just run a build command:
+- A Laravel application (Sail-based).
+- Docker and Docker Compose installed on your development machine.
 
-    docker build --no-cache
+## Quick Setup
 
-and then you should be set to:
+1. **Add Docker Files**  
+   Copy the Docker-related files from this repository into the root of your Laravel project.
 
-      ./vendor/bin/sail up
+2. **Optional Configuration Changes**  
+   Before building the Docker image, you may modify the environment variables, such as setting a custom timezone. For example:
 
-Here the default cointaners are :
-- Ubuntu 22 *
-- Redis
-- Mailpit
-- MS SQL Server 2022
+   ```bash
+   ENV TZ=America/Sao_Paulo
+   ```
 
-(* This Ubuntu image is based on the same Dockerfile used and originaly set up in the [**Laravel Sail**](https://github.com/laravel/sail) package, so the app is served by a `php artisan serve` command, making it **unsuitable** for **production**. )
+   You can also customize the `docker-compose.yml` file to update, add, or remove service containers according to your needs.
+
+3. **Build the Docker Image**  
+   To ensure a fresh build, run the following command:
+
+   ```bash
+   docker build --no-cache .
+   ```
+
+4. **Start the Containers**  
+   Once the image is built, bring up the Docker environment by running Sail:
+
+   ```bash
+   ./vendor/bin/sail up
+   ```
+
+   This will start all the containers specified in the `docker-compose.yml` file.
+
+## Default Containers
+
+The default setup includes the following services:
+
+- **Ubuntu 22.04** (Base environment from the official Laravel Sail Dockerfile)
+- **Redis** (For caching)
+- **Mailpit** (For email testing)
+- **MS SQL Server 2022** (Database)
+
+> Note: The application is served via the `php artisan serve` command, which is not suitable for production environments. The setup mirrors Laravel Sail’s original configuration, which is tailored for development.
+
+## Customization
+
+Feel free to modify the `docker-compose.yml` file to suit your development needs. You can add or remove services, change configurations, or integrate additional tools.
+
+### Example: Adding a MySQL Service
+
+If you wish to add MySQL alongside MS SQL Server, you can update the `docker-compose.yml` to include a MySQL container:
+
+```yaml
+services:
+  mysql:
+    image: mysql:8.0
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: laravel
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+```
+
+## Important Notes
+
+- This setup is intended for local development only. Do not use it in production.
+- The Ubuntu container is configured for development and serves the Laravel application using the `php artisan serve` command, which is not performant or secure for production environments.
+  
+## Troubleshooting
+
+If you encounter issues while building or starting the containers, here are a few tips:
+
+- Ensure Docker is running and that your Docker Compose file is properly configured.
+- Check for any port conflicts with other services running on your machine (such as MS SQL or Redis).
+- Use `docker-compose logs` to view logs for individual containers.
+
+## Conclusion
+
+This Docker setup provides a convenient way to develop Laravel applications that require MS SQL Server support. With minimal configuration, you can spin up a fully functional development environment tailored to your needs.
+
+---
