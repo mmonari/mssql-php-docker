@@ -24,7 +24,8 @@ services:
             - sail
         depends_on:
             - redis
-
+            - sqlsrv
+        
     redis:
         image: 'redis:alpine'
         ports:
@@ -51,8 +52,7 @@ services:
         ports:
             - '${FORWARD_DB_PORT:-1433}:1433'
         volumes:
-            - 'sql_db:/var/opt/mssql'
-            - './database/sqlsrv/data/backup:/var/opt/mssql/data/backup'
+            - 'sqldb:/var/opt/mssql'
         networks:
             - sail
 
@@ -69,5 +69,5 @@ networks:
 volumes:
     sail-redis:
         driver: local
-    sql_db:
+    sqldb:
         driver: local
