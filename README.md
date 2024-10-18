@@ -1,19 +1,28 @@
-# PHP8.2+MS SQL Dockerfile
+# Laravel + MS SQL Docker
+### FOR DEVELOPMENT ENVIRONMENTS ONLY
 
-Used within a private project to quickly build a development environment with Laravel and MS SQL Server.
+Yes, you read it right: this is just intended to be used for Laravel apps development that require the php / mssql drivers to access a MS SQL Server instance. Please, **don't use it in production**. 
 
-Derived from the official php 8.2 image, touched by "Laravel Sail" like features, and is total compatible to sail environment. 
-Just add the Docker related files in this repository at the root of your project, build the image, and *sail it up* as usual ;-) 
+This is to be used to quickly setup a development environment with Laravel and MS SQL Server.
 
-	    docker build --no-cache
-      ./vendor/bin/sail up
-
-In the Dockerfile don't forget to change the timezone by setting the environment variable TZ to the desired timezone, for example:
+Just add the Docker related files in this repository at the root a Laravel (already sail based) project, then build the image, and *sail it up* as usual ;-) 
+Prior to building, if you wish, make changes like the timezone by setting the environment:
 
     ENV TZ=America/Sao_Paulo
 
-In this current docker-compose.yml, also change/add services as you wish. Default extra containers loaded are redis and mailpit.
+Or change the `docker-compose.yml` file to update, remove, add service containers as you wish. 
+When ready, just run a build command:
 
-Personal suggestion: add a MSSQL as a container since you are at it as well :-D.
+    docker build --no-cache
 
-Enjoy, and happy coding. 
+and then you should be set to:
+
+      ./vendor/bin/sail up
+
+Here the default cointaners are :
+- Ubuntu 22 *
+- Redis
+- Mailpit
+- MS SQL Server 2022
+
+(* This Ubuntu image is based on the same Dockerfile used and originaly set up in the [**Laravel Sail**](https://github.com/laravel/sail) package, so the app is served by a `php artisan serve` command, making it **unsuitable** for **production**. )
