@@ -9,17 +9,15 @@ This setup allows you to quickly spin up a development environment for Laravel a
 
 ## PHP Version Support
 
-This repository provides two PHP versions:
+This repository provides two PHP versions, both using **official Microsoft SQL Server drivers**:
 
 ### PHP 8.4 (Default - Recommended)
-- Uses FreeTDS for SQL Server connectivity
-- Fully compatible with PHP 8.4
-- Open-source solution with long-term support
+- Uses official Microsoft ODBC Driver 18 and PHP extensions (`sqlsrv`, `pdo_sqlsrv`)
+- Multi-stage Dockerfile build for cleaner layering
 - **Current default configuration**
 
 ### PHP 8.3 (Alternative)
-- Uses official Microsoft SQL Server drivers
-- May require manual driver updates for future PHP versions
+- Uses official Microsoft ODBC Driver 18 and PHP extensions (`sqlsrv`, `pdo_sqlsrv`)
 - Located in the `docker/8.3` directory
 
 **To use PHP 8.3 instead:**
@@ -107,20 +105,6 @@ FORWARD_DB_PORT=1433
 
 Update your `config/database.php` to include the SQL Server connection:
 
-**For PHP 8.4 (FreeTDS):**
-```php
-'sqlsrv' => [
-    'driver' => 'dblib',
-    'host' => env('DB_HOST', 'sqlsrv'),
-    'port' => env('DB_PORT', '1433'),
-    'database' => env('DB_DATABASE', 'laravel'),
-    'username' => env('DB_USERNAME', 'sa'),
-    'password' => env('DB_PASSWORD', ''),
-    'charset' => env('DB_CHARSET', 'utf8'),
-],
-```
-
-**For PHP 8.3 (Microsoft drivers):**
 ```php
 'sqlsrv' => [
     'driver' => 'sqlsrv',
@@ -181,7 +165,8 @@ If you encounter issues while building or starting the containers:
 
 The setup uses:
 
-- **FreeTDS**: Open-source TDS library providing SQL Server connectivity for PHP 8.4
+- **Microsoft ODBC Driver 18**: Official Microsoft driver for SQL Server connectivity
+- **PHP Extensions**: `sqlsrv` and `pdo_sqlsrv` installed via PECL
 - **Ubuntu 24.04**: Base image with PHP 8.4 from Ondrej's PPA
 - **Microsoft SQL Server 2022**: Official container image with Developer edition
 - **Laravel Sail Pattern**: Familiar development workflow for Laravel developers
